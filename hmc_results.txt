@@ -1,0 +1,8 @@
+HMC results
+
+delta_t = 0.001
+traj_len = 10
+
+<x> = 0.002326189549836536
+<x**2> = 0.33682653734414814
+|psi_0|**2 is too narrow too

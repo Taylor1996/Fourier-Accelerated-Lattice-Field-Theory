@@ -1,0 +1,52 @@
+import numpy as np
+import random as rand
+import math
+
+"""
+Steps:
+
+propose a number u which is distributed according to a uniform distro between -h and h. The value of h is adjusted to meet a predefined acceptance ratio.
+
+"""
+
+
+# initialize (thermalize) the system (cold first). The system is an array of N_tau position values corresponding to N_tau values of time.
+
+N_tau = 120  # number of timeslices
+m = 1.0 # mass of particle
+omega = 1.0
+
+def thermalize(x,mode, N_tau, h):
+    # either hot, cold or approx equilibrated
+    if mode=="cold":
+        return np.zeros(N_tau)
+    elif mode=="hot":
+        np.random.uniform(-h, h, N_tau)
+
+        
+def MCMC():
+    """
+    we now propose an update to position x_i. x_i -> x_i + u
+    """
+    for i,x_i in enumerate(x):
+        x_new = x_i + np.rand.uniform(-h,h)
+        if accept(x_new,x,i):
+            x[i] = x_new
+
+
+def accept(x_new, x, i):
+    tau_plus = (i+1)%N_tau
+    tau_minus = (i-1)%N_tau
+    x_plus = x[tau_plus]
+    x_minus = x[tau_minus]
+    S_old = 0.5*m*(x_plus - x[i])**2 + 0.5*m*(x[i]-x_minus)**2 + 0.5*m*omega**2*x[i]**2     # we need only consider positions x_(i-1), x_i, x_i+1
+    S_new = 0.5*m*(x_plus - x_new)**2 + 0.5*m*(x_new-x_minus)**2 + 0.5*m*omega**2*x[i]**2   # as all others cancel in the difference delta_S
+    delta_S = S_new - S_old
+
+    p_accept =  math.exp(-delta_S)
+    # accept update with probability p_accept. If the update lowers the action, then exp(-delta_S)>1, and the update is definitely made.
+    # if the update doesn't lower the action, acceptance occurs with probability exp(-delta_S) as ensured by comparison with a unif(0,1) random
+    if(p_accept > np.rand.uniform()): 
+        return True
+    else:
+        return False

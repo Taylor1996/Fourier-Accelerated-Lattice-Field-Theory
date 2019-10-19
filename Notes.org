@@ -1,0 +1,150 @@
+* Smit
+
+- The structure seems to 
+(1) introduce the path integral formulation of QM in the most general sense. 
+(2) Put it on a formal footing by discretizing time. He also looks at some of the consequences of the path integral. Considering a typical $\phi^4$ potential, he introduces the transfer operator and goes on to obtain its spectrum (why?)
+Before this, he goes on to introduce imaginary time. This is apparently just a method which is employed to make theoretical arguments easier along with numerical methods. 
+(3) Apply this formalism to the latticization of a scalar field. 
+(4) 
+
+* Acceleration of guage field dynamics
+
+
+- Defined critical slowing down: Consider a free scalar field with action $S(\phi) = ( - \partial^2) for MD simulations of a system governed by Hamilton's equations 
+\begin{equation}
+\dot{\pi} = - \frac{\partial S}{\partial \phi}  \qquad \dot{\phi} = \frac{\partial H}{\partial \pi} 
+\end{equation}
+the max stepsize $dt$ scales like the inverse of the max frequency mode $\omega _{ \text{max} }$. Therefore, the min number of steps taken to complete one cycle for the slowest modes goes like 
+\begin{equation}
+\omega _{ \text{max} } / \omega _{ \text{min} }  = 
+\end{equation}
+($\omega _{ \text{max} }$ is in numerator b/c the min CPU time for a cycle is given by the reciprocal of the size of the timestep of a cycle. $\omega _{ \text{min} }$ is in the denominator b/c we want to obtain the min number of steps required for a cycle using slowest modes where we know the max possible step size.)
+- Critical slowing down occurs when this ratio diverges, i.e. when the number of degrees of freedom (?) within one correlation length $1/m$ (why is this a "correlation" length? why mass, other than being a proxy for $\omega$?) goes to infinity. /My understanding of this is as follows: $1/\omega _{\text{max}}$ sets a characteristic length   /
+- This is a problem b/c the physics that we are interested in occurs at short wavelength scales.
+- Proposed solution: a new Hamiltonian is introduced which gives a ratio equal to one for all modes. 
+- The cost of this solution is the 
+
+** Review of the molecular dynamics formulation of LGT
+- Why do they start off with the Hamiltonian $H(U,P) = \frac{1}{4} \text{tr} (P^2) - \beta S(U)$?
+
+If you don't have much experience with Monte Carlo simulations, you might want to start with simulations of the 2d Ising model, which is a lot less complex than SU(N) Yang-Mills or QCD. Monte Carlo simulation is mostly an art, since we don't usually have rigorous error bounds. You'll learn the art faster if you can reduce the time your simulations take, and 2d Ising model sims are extremely fast. You can do them in Python on a modern laptop in a matter of minutes.
+
+Try tuning the hopping parameter until you see the phase change. See if you can extract critical exponents and check them against the exact solutions.
+
+
+Discretization of space-time using lattices has one very important consequence. Due to a non-zero lattice spacing, a cutoff in momentum space arises. The cutoff can be observed by having a look at the Fourier transformed fieldϕ~(p)=∑xa4 e−ipx ϕ(x).The Fourier transformed functions are periodic in momentum-space, so that one can identifypμ≅pμ+2πaand restrict the momenta to the so-called first Brillouin zone−πa<pμ≤πa.The inverse Fourier transformation, for example, is given byϕ(x)=∫π/a−π/ad4p(2π)4 eipx ϕ~(p).One recognises an ultraviolet cutoff|pμ|≤πa.Therefore field theories on a lattice are regularized in a natural way.
+
+* HMC
+** My understanding
+- See below
+
+** Questions
+- "Because we are proposing that we update all fields simultaneously, we insist that the acceptance rate is large" - why? Is it because simultaneous updating of all fields is computationally expensive and so a low acceptance rate would lead to unacceptably long simulation times? yes. optimum about 70 percent.
+40, 50 percent for metropolis
+- Also, the decision to update all fields (field points?) simultaneously is due to the need to evolve the whole system in parallel to avoid the non-locality of the effective action?
+- Why do we want to minimize the correlation between successive field configurations? So as to explore phase space as quickly as possible? Reconciliation of this with my earlier interpretation that stationary 
+
+
+in montecarlo. You you want independent samples to indep 
+box with wavy lines correlation near points
+
+Euclidian time is imaginary time.
+
+x is a function of continuous time variable
+
+test on 100 long lattice 
+start with cold (all x's are zero) or hot
+Measure 
+look at when the quantit measured flattens out
+
+in metropolis, you sweep through the lattice one point at a time. 
+sweep is attempt to update all sites on lattice
+not actually 
+
+acceptance probability is now e^{-\Delta S)$ note  that you only update each site at a time.
+when updating a single site look at contrib to action 
+see if proposed x4 new makes exp(-
+
+no point of contributing contrib of 
+would just 
+
+should get expval of x (zero) or x^2 or potential energy
+
+work in a set of units where $\hbar = 1$. Don't want 
+
+use github
+
+need translation invariance 
+
+be able to init hot or cold. make sure you get same answer 
+
+
+
+
+\begin{equation}
+S_E = \int \limits_{d \tau }^{} 
+\end{equation}
+on lattice you get sum
+
+use central difference b/c 
+
+
+
+* Questions 
+- Ask about partial integration
+
+- https://www-zeuthen.desy.de/alpha/lgt25-11-11.pdf - Notation - $\frac{1}{\hat{p}^2 + m^2}$ Higher point functions?
+
+- where does the fermion action $S = \int \bar{\psi} (\not{\partial} + m) \psi$ come from?x
+
+- 
+
+* My understanding so far
+
+- Purpose of the path integral in this whole discussion: so it would seem that we want to obtain the propagator of the system (i.e. the Green's function). This shall allow us to evolve the field configuration from its initial configuration to its configuration at time t. It seems like we can show that the Green's function can be expressed as a path integral if we analytically continue to imaginary time using Wick rotations.
+- It seems like the "transfer operator" is a discretized evolution operator. Authors seem to go on to obtain its spectrum. Why? $U$ is a function of $H$ and therefore shall have eigenstates which are eigenstates of $H$. Also, its eigenvalues are functions of the energy of the corresponding eigenstates. Is it to obtain the equilibrium configuration of the field? If $\hat{T} \phi = \lambda \phi$, we have a stationary solution?
+path integral formulation best for numerics. Number of states for Hamiltonian ops grow exponentially.
+
+Wick rotation in order to get probabilities instead of an $e ^i$ action.
+
+Look 
+
+Notice how the Euclidian Lagrangian is V+T
+
+
+- Simulations: 
+- step 1. Generate an initial $\phi$-field configuration according to $P(\phi) = \frac{1}{Z} \exp{-S(\phi)}$
+- Generate a value of the conjugate momentum $\pi$ according to $P_G \propto \exp(- \pi^2/2)$.
+- Evolve the configuration from $(\phi, \pi) \to (\phi', \pi')$ deterministically, according to Hamilton's equations with $H= \frac{1}{2} \pi^2 + S(\phi)$.
+- Accept the resulting configuration $(\phi', \pi')$ with acceptance probability $P_A((\phi, \pi) \to (\phi', \pi')) = \text{min} (1, \exp(\delta H))$
+- Each step in the Markov sequence occurs with transition probability (referring to the $\phi$-field alone)
+  $p_M(\phi \to \phi') = \int \limits_{}^{} [d\pi][d\pi'] p_G(\pi) p_H ((\phi, \pi) \to (\phi', \pi')) p_A ((\phi, \pi) \to (\phi', \pi'))$
+
+
+* https://arxiv.org/pdf/hep-lat/0012005.pdf
+
+Let us return to quantum mechanics for a moment. Here we can also introduce Greens functions, e.g.
+G(t1, t2) = h0|X(t1)X(t2)|0i, t1 > t2. (26)
+We are now going to demonstrate that these Greens functions are related to
+quantum mechanical amplitudes at imaginary times by analytic continuation.Let us return to quantum mechanics for a moment. Here we can also introduce Greens functions, e.g.
+G(t1, t2) = h0|X(t1)X(t2)|0i, t1 > t2. (26)
+We are now going to demonstrate that these Greens functions are related to
+quantum mechanical amplitudes at imaginary times by analytic continuation.
+
+
+
+* MCMC for quantum harmonic oscillator
+
+- This simulation uses MCMC to calculate observables associated with a 1D quantum harmonic oscillator governed by the discretized dimensionless action: 
+\begin{equation}
+\tilde{S} = \sum \limits_{i=1}^{N _{\tau} } \left( (x _{i+1} - x_i)^2/2 \tilde{m}  \right)
+\end{equation}
+(could use the central difference formula in the expression for momentum but it makes no reference to $x_i$. Would this have an undesireable affect on accepting an $x_i$ update? Wait, scratch this - x_i does appear in the expression for the central diff for 2nd derivative)
+
+
+- It seems like Westbroek and King visit lattice sites at random in each sweep such that each site could be visited more than once or never but the AVERAGE number of visits per sweep is 1. Why?
+
+- accrate = accrate + $1/ N_{tau}$. If we have accepted an update, increase the observed acceptance rate accrate. The max accrate can be is 1 if we accept at all $N _{\tau}$ sites. Then $h_i \to h_f= h_i*(1/idrate) \geq h_i$. My intuition tells me that we'd want to get the acceptance rate down but we make $h$ greater here. This would imply that updating to more distant $x_i$ points should be less likely. Or it just means that we change h (increasing is an arbitrary choice). This may or may not cause greater acceptance next time.   It makes sense that the 
+Hmm, if all x_i's are near where they "should" be then increasing h should decrease acceptance which means that accrate is small which means that h is decreased further and we get nearer to the correct x_i positions. If x_i's are far from correct, then there is more chance that some jump to a point near their correct positions. Therefore, we accept more and so increase h. Eh, I'm not entirely sure I see how it is guaranteed to work.
+
+- Westbroek et al note that due to correlation between subsequent paths, the error on the estimation of the mean does not decrease like $1/ \sqrt{N}$.
