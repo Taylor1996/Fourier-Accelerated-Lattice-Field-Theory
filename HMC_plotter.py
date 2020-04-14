@@ -18,9 +18,9 @@ import math
 #np.mean(np.exp(-np.array(delta_H_list)))
 
 
-#infile = open("correct_mins_1000_0.25_10000.txt", "r")
-infile = open("Creutz_params_303_0.25_1000000.txt", "r")
-#infile = open("aho_N_t_100_a_0.25_N_trajs_100000incl_a.txt", "r")
+#infile = open("hmc_output_smaller_step.txt", "r")
+#infile = open("aho_N_t_10_a_0.001_N_trajs_1000000_get_symmetry.txt", "r")
+infile = open("fourier_accelerated_1d_scalar_field_mod_sampling.txt", "r")
 #infile = open("aho_creutz_dh_dt_N_t_200_a_0.25_N_trajs_100000_.txt", "r")
 s = infile.read()
 tokens = s.split('[')[1:]
@@ -32,12 +32,14 @@ for i,path in enumerate(tokens):
 #x_data = [path for path in tokens[1:]]
 pathList = [[0]*len(tokens[0])]*len(tokens)
 for i in range(len(tokens)):
-    pathList[i] = [float(x_i) for x_i in tokens[i].split()]
+    pathList[i] = np.array([float(x_i) for x_i in tokens[i].split()])
     
 # discard first 100 steps as thermalization
 pathList = pathList[100:]
 
+
 N_tau = len(pathList[0])
+print(N_tau)
 #print(N_tau)
 #print(len(pathList))
 #print(pathList)
@@ -47,7 +49,10 @@ N_tau = len(pathList[0])
 N_sep = 1 # config sample frequency
 
 ##x_avg = [(1/N_tau)*np.mean(np.array(path)) for path in pathList[::N_sep]]
-##x2_avg = [(1/N_tau)*np.mean(np.array(path)**2) for path in pathList[::N_sep]]
+#x2_avg = (1/N_tau)*np.mean[*np.mean(np.array(path)**2) for path in pathList[::N_sep]]
+#x2_avg = (1/N_tau)*np.mean(np.ravel(pathList)**2)
+O = np.array(list(itertools.chain.from_iterable(np.array(pathList))))**2
+print(np.mean(O))
 ## the below are for plotting HMC, the above is for plotting ordinary standard MCMC
 #x_avg = [(1/N_tau)*np.mean(np.array(path)) for path in pathList]
 #x2_avg = [(1/N_tau)*np.mean(np.array(path)**2) for path in pathList]
@@ -74,9 +79,8 @@ psi_0 = np.histogram([x_i for path in pathList for x_i in path],bins="auto", den
  
 
 
-plt.title('Ground state wavefunction of the anharmonic oscillator')
-plt.xlabel('x')
-plt.ylabel('$|\psi_0(x)|^2$')
+
+
 # I should normalize btw
 # plt.scatter(list(psi_0[1])[1:], list(psi_0[0]**2))
 plt.scatter(list(psi_0[1])[1:], list(psi_0[0]))

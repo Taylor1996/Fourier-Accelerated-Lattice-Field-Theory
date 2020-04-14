@@ -10,10 +10,16 @@ np.set_printoptions(threshold=sys.maxsize)
 Make the lattice size N_tau an input
 """
 
+#infile = open("fourier_accelerated_1d_scalar_field_noFFTs.txt", "r")
+#infile = open("fourier_accelerated_1d_scalar_field_mod_sampling.txt", "r")
 
-#infile = open("hmc_output_new_S.txt", "r")
-infile = open("aho_N_t_200_a_0.25_N_trajs_1000000_.txt", "r")
-outfile = open("AHO_output_for_gamma.txt", "w")
+infile = open("fourier_accelerated_1d_scalar_field_noFFTs.txt", "r")
+#infile = open("aho_N_t_200_a_0.25_N_trajs_1000000_.txt", "r")
+#outfile = open("unaccelerated_autocorr_format.txt", "w")
+outfile = open("noFFTs_accelerated_autocorr_format.txt", "w")
+
+#outfile = open("FFT_accelerated_autocorr_format.txt", "w")
+#outfile = open("hmc_output_new_S_autocorrelation_data.txt", "w")
 # infile = open("output_more_runs_N_tau=1200_m=0.1_omega=0.1", "r")
 s = infile.read()
 tokens = s.split('[')[1:]
@@ -26,7 +32,7 @@ therm_len = 100
 
 new_paths = []
 
-for i in range(1000):
+for i in range(20000):
     new_path = re.sub('\]|\n', '', tokens[i])
     new_paths.append(new_path)
     
